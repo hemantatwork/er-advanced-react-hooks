@@ -3,16 +3,31 @@
 
 import * as React from 'react'
 
-function Counter({initialCount = 0, step = 1}) {
-  // 🐨 replace React.useState with React.useReducer.
-  // 💰 React.useReducer(countReducer, initialCount)
-  const [count, setCount] = React.useState(initialCount)
+function countReducer(state, action) {
+  switch (action.type) {
+    case 'INCREMENT':
+      console.log('INCREMENT TYPE OF DISPATCH ACTION 🚀')
+      return {count: state.count + action.step}
+    default:
+      throw new Error(`Unsupported Type Action ${action.type}`)
+  }
+}
 
-  // 💰 you can write the countReducer function so you don't have to make any
-  // changes to the next two lines of code! Remember:
-  // The 1st argument is called "state" - the current value of count
-  // The 2nd argument is called "newState" - the value passed to setCount
-  const increment = () => setCount(count + step)
+function init(initialStateFromProps) {
+  return {
+    count: 10,
+  }
+}
+function Counter({initialCount = 0, step = 1}) {
+  const [state, dispatch] = React.useReducer(
+    countReducer,
+    {
+      count: initialCount,
+    },
+    init,
+  )
+  const {count} = state
+  const increment = () => dispatch({type: 'INCREMENT', step})
   return <button onClick={increment}>{count}</button>
 }
 

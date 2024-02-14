@@ -3,11 +3,15 @@
 
 import * as React from 'react'
 
+function mediaFormatter({query, state}) {
+  return `formatted => \`${query}\` => ${state}`
+}
+
 function useMedia(query, initialState = false) {
   const [state, setState] = React.useState(initialState)
   // 🐨 call React.useDebugValue here.
   // 💰 here's the formatted label I use: `\`${query}\` => ${state}`
-
+  React.useDebugValue({query, state}, mediaFormatter)
   React.useEffect(() => {
     let mounted = true
     const mql = window.matchMedia(query)
